@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "PowerShell(npm *)",
+      "PowerShell(npx *)",
+      "PowerShell(node *)"
+    ]
+  },
+  "env": {
+    "PATH": "C:\\Users\\timpa\\AppData\\Local\\Author Software\\nvm;C:\\Users\\timpa\\AppData\\Local\\Author Software\\nvm\\.nodejs;C:\\Program Files\\ImageMagick-7.1.2-Q16-HDRI;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\dotnet\\;C:\\Program Files\\Git\\cmd;C:\\Users\\timpa\\AppData\\Local\\Programs\\Python\\Python314\\Scripts\\;C:\\Users\\timpa\\AppData\\Local\\Programs\\Python\\Python314\\;C:\\Users\\timpa\\AppData\\Local\\Programs\\Python\\Launcher\\;C:\\Users\\timpa\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\timpa\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\timpa\\.lmstudio\\bin;C:\\Users\\timpa\\.dotnet\\tools;C:\\Users\\timpa\\.local\\bin;C:\\Users\\timpa\\.bun\\bin"
+  }
+}

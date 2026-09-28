@@ -1,0 +1,418 @@
+/* Spalter ----------------------------------------------------------------- */
+
+.pu-columns {
+  display: grid;
+  /* Båda spalterna är begränsade: turordningen behöver inte hela sidbredden,
+     och utan tak hamnar knapparna långt ifrån datumen de hör till. */
+  grid-template-columns: minmax(280px, 360px) minmax(320px, 640px);
+  justify-content: start;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1040px) {
+  .pu-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pu-panel {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.pu-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--page-bg);
+}
+
+.pu-panel__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+
+.pu-panel__hint {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+/* Teamväljaren hör till turordningen och sitter därför i dess panelhuvud. */
+.pu-panel__head .team-picker {
+  margin-left: auto;
+  padding: 2px 2px 2px 10px;
+}
+
+.pu-panel__head .team-picker__select {
+  height: 26px;
+  min-width: 130px;
+}
+
+.pu-panel__body {
+  padding: 12px 14px;
+}
+
+/* Tre veckor blir en lång lista. Den rullar i stället för att skjuta ned
+   resten av sidan, och tonas ut nedtill så det syns att den fortsätter. */
+.pu-panel--scrollable {
+  position: relative;
+}
+
+.pu-panel__body--scroll {
+  max-height: 480px;
+  overflow-y: auto;
+  padding-bottom: 28px;
+}
+
+.pu-panel--scrollable::after {
+  content: '';
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  left: 1px;
+  height: 46px;
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0),
+    var(--surface) 78%
+  );
+  pointer-events: none;
+}
+
+.pu-panel__footnote {
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--grid-line);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.pu-empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Sammanfattning i Mina PU-dagar ------------------------------------------- */
+
+.pu-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--grid-line);
+}
+
+.pu-stats__value {
+  font-size: 1.75rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.pu-stats__label {
+  max-width: 7ch;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+}
+
+.pu-stats__next {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  text-align: right;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+.pu-stats__next-label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.pu-stats__next-date {
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+
+.pu-stats__none {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+/* Veckor ------------------------------------------------------------------ */
+
+.pu-weeks {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pu-week__title {
+  margin: 0 0 2px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.pu-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Dagrader ---------------------------------------------------------------- */
+
+/* Raderna sitter i en panel, så de har hårfina avdelare i stället för egna
+   ramar – kort i kort blir rörigt. */
+.pu-day {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  transition: background-color 0.12s ease;
+}
+
+.pu-day + .pu-day {
+  box-shadow: inset 0 1px 0 var(--grid-line);
+}
+
+.pu-day.is-off {
+  color: var(--text-muted);
+}
+
+/* Färgad kant i stället för ram: ingen layoutförskjutning när den slås på. */
+.pu-day.is-mine {
+  background: var(--own-row-bg);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.pu-day.is-open {
+  background: #fff8f3;
+  box-shadow: inset 3px 0 0 var(--c-idag);
+}
+
+.pu-day.is-today {
+  box-shadow: inset 3px 0 0 var(--c-idag);
+}
+
+/* Hover efter tillståndsreglerna, annars vinner de på specificitet. Varannan
+   rad grå valdes bort: sidan har redan hårlinjer, brickor och kantmarkeringar,
+   och ett rutmönster till hade lagt på mer struktur än det tar bort. */
+.pu-day:hover {
+  background: var(--hover);
+}
+
+.pu-day.is-mine:hover {
+  background: #e2ecff;
+}
+
+.pu-day.is-open:hover {
+  background: #ffeee1;
+}
+
+.pu-day__date {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 82px;
+}
+
+.pu-day__weekday {
+  min-width: 26px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.pu-day__number {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.pu-day__month {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.pu-day__today {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--c-idag);
+  color: #fff;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pu-day__reason {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+/* Namnblocket ger vika först: hellre kortad text än knappar som trängs ut. */
+.pu-day__assignee {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.pu-day__avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  font-size: 0.625rem;
+  font-weight: 650;
+}
+
+.pu-day__avatar--own {
+  background: var(--accent);
+  color: #fff;
+}
+
+.pu-day__avatar--open {
+  background: var(--c-idag);
+  color: #fff;
+  font-size: 0.8125rem;
+}
+
+.pu-day__name {
+  flex: 0 1 auto;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Kortas före namnet – vem som gör dagen väger tyngre än varför. */
+.pu-day__substitute {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Teamnamnet på en av mina dagar – spalten blandar flera team. */
+.pu-mine__team {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Brickor och knappar ------------------------------------------------------ */
+
+.pu-day__trailing {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* En prick i stället för en textbricka. Lila är redan etablerat som
+   arbetsförkortad i kalendern, så färgen räcker – ordet tog en fjärdedel av
+   raden och konkurrerade med namnet. */
+.pu-day__dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgb(0 0 0 / 0.18);
+  border-radius: 50%;
+  background: var(--c-arbetsforkortad);
+}
+
+.pu-day__tag {
+  padding: 2px 8px;
+  border: 1px solid var(--c-idag);
+  border-radius: 999px;
+  color: var(--c-idag);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Knappen är dämpad tills raden hovras – femton ramar på rad drog till sig
+   mer uppmärksamhet än schemat de hörde till. */
+.pu-day__action {
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.pu-day:hover .pu-day__action,
+.pu-day__action:focus-visible {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.pu-day__action:hover {
+  border-color: var(--border);
+  background: var(--hover);
+  color: var(--text);
+}
+
+/* Undantaget: "Ta passet" är sidans uppmaning och ska synas utan hover. */
+.pu-day__action--accept,
+.pu-day:hover .pu-day__action--accept {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.pu-day__action--accept:hover {
+  filter: brightness(1.08);
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pu-day,
+  .pu-day__action {
+    transition: none;
+  }
+}

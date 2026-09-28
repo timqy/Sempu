@@ -1,0 +1,213 @@
+.team-create {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-create__input {
+  height: 36px;
+  min-width: 220px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.team-create__submit {
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.team-create__submit:hover {
+  filter: brightness(1.08);
+}
+
+.team-section {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.team-card:hover {
+  border-color: var(--accent);
+}
+
+.team-card.is-expanded {
+  border-color: var(--accent);
+}
+
+/* Hela raden är knappen, så det inte krävs att man träffar en liten yta. */
+.team-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 18px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-card__head:hover {
+  background: var(--hover);
+}
+
+.team-card__head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.team-card__chevron {
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.team-card.is-expanded .team-card__chevron {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-card__chevron {
+    transition: none;
+  }
+}
+
+.team-card__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.team-card__badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.team-card__avatars {
+  display: flex;
+}
+
+.team-card__avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-left: -6px;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  font-size: 0.625rem;
+  font-weight: 650;
+}
+
+.team-card__avatar:first-child {
+  margin-left: 0;
+}
+
+.team-card__avatar--own {
+  background: var(--accent);
+  color: #fff;
+}
+
+.team-card__avatar--more {
+  background: var(--hover);
+  color: var(--text-muted);
+}
+
+.team-card__count {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Utfällt innehåll ---------------------------------------------------------- */
+
+.team-card__footer {
+  display: flex;
+  padding: 0 20px 16px;
+  background: var(--page-bg);
+}
+
+.team-card__leave,
+.team-card__join {
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.team-card__join {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.team-card__join:hover {
+  filter: brightness(1.08);
+}
+
+.team-card__leave:hover {
+  background: var(--c-rod-dag);
+  border-color: var(--c-rod-dag-stark);
+  color: var(--c-rod-dag-stark);
+}
+
+/* Medlemspanelen sitter inuti kortet och ska inte ha egen ram. */
+.team-card .team-panel {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--page-bg);
+  padding-bottom: 12px;
+}

@@ -1,0 +1,104 @@
+.team-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.team-panel__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-panel__label {
+  min-width: 130px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.team-panel__input {
+  height: 32px;
+  min-width: 260px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.team-panel__members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-panel__member {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--page-bg);
+}
+
+.team-panel__avatar {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  font-size: 0.625rem;
+  font-weight: 650;
+}
+
+.team-panel__member-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.team-panel__member-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.team-panel__member-role {
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+}
+
+.team-panel__remove {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.team-panel__remove:hover {
+  background: var(--c-rod-dag);
+  color: var(--c-rod-dag-stark);
+}
+
+.team-panel__note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}

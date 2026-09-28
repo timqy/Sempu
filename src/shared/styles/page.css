@@ -1,0 +1,167 @@
+/**
+ * Sidramverk som alla flikar delar: rubrik, verktygsrad, tillståndsmeddelanden
+ * och raden med fristående block.
+ *
+ * Låg här tidigare i semesterplanerarens stilmall, vilket gjorde att Team- och
+ * PU-sidorna bara fick sin layout så länge allt hamnade i samma bundle. Den
+ * dagen routerna lazy-laddas hade de renderats ostilade.
+ */
+
+.planner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Sidhuvud ---------------------------------------------------------------- */
+
+.planner-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.planner-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 650;
+}
+
+.planner-subtitle {
+  margin: 4px 0 0;
+  max-width: 60ch;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Verktygsrad -------------------------------------------------------------- */
+
+.planner-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.planner-year {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.planner-year__step {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.planner-year__step:hover {
+  background: var(--hover);
+}
+
+.planner-year__value {
+  min-width: 56px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.planner-today-button,
+.planner-icon-button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.planner-today-button::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-idag);
+}
+
+.planner-today-button:hover,
+.planner-icon-button:hover {
+  background: var(--hover);
+}
+
+.planner-icon-button.is-active {
+  border-color: var(--accent);
+  background: var(--own-row-bg);
+  color: var(--accent);
+}
+
+/* Rad med fristående block ------------------------------------------------- */
+
+/**
+ * Blocken behåller sina egna ramar men ligger sida vid sida och får samma
+ * höjd, så raden läses som en enhet utan att innehållet slås ihop.
+ */
+.planner-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 12px;
+}
+
+/* Tillstånd ---------------------------------------------------------------- */
+
+.planner-status {
+  margin: 0;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+
+.planner-status--error {
+  border-color: var(--c-rod-dag-stark);
+  color: var(--c-rod-dag-stark);
+}
+
+.planner-status--error button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planner-year__step,
+  .planner-today-button,
+  .planner-icon-button {
+    transition: none;
+  }
+}

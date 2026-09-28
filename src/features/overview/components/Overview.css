@@ -1,0 +1,92 @@
+.overview-count {
+  align-self: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+/* Delade tidigare regler med team-featurens .team-panel, vilket band ihop två
+   features över en gränsyta ingen av dem ägde. Egna regler nu. */
+.view-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.view-editor__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-editor__label {
+  min-width: 130px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.view-editor__input {
+  height: 32px;
+  min-width: 260px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.view-editor__teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.view-editor__team {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--page-bg);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.view-editor__team-count {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--avatar-bg);
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+  font-weight: 650;
+}
+
+.view-editor__delete {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--c-rod-dag-stark);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.view-editor__delete:hover {
+  background: var(--c-rod-dag);
+}

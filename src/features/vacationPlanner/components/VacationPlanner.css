@@ -1,0 +1,906 @@
+/* Sidramverket – .planner, rubriker, verktygsrad och tillstånd – ligger i
+   src/shared/styles/page.css, eftersom alla flikar använder det. */
+
+/* Mjuk övergång ----------------------------------------------------------- */
+
+/* Hovermarkeringarna monteras och avmonteras, så de tonas in med en animation
+   i stället för en transition – det finns inget utgångsläge att gå från. */
+@keyframes planner-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.planner-daymark,
+.planner-daymark-label,
+.planner-highlight,
+.planner-highlight__labels {
+  animation: planner-fade-in 0.13s ease-out;
+}
+
+.planner-brush__option,
+.planner-name__count {
+  transition:
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+}
+
+/* Dagrutorna får en egen, kortare övergång: de är tusentals och byter färg
+   under ett pågående drag, där en längre animation känns trög. */
+.planner-cell {
+  transition: background-color 0.08s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planner-daymark,
+  .planner-daymark-label,
+  .planner-highlight,
+  .planner-highlight__labels,
+  .planner-cell,
+  .planner-brush__option,
+  .planner-name__count {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Penslar ------------------------------------------------------------------ */
+
+.planner-brush {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.planner-brush__option {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.planner-brush__option::before {
+  content: '';
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgb(0 0 0 / 0.18);
+  border-radius: 3px;
+}
+
+.planner-brush__option--semester::before {
+  background: var(--c-semester);
+}
+
+.planner-brush__option--foraldraledig::before {
+  background: var(--c-foraldraledig);
+}
+
+.planner-brush__option--arbetsforkortad::before {
+  background: var(--c-arbetsforkortad);
+}
+
+.planner-brush__option--radera::before {
+  background: var(--c-arbetsdag);
+}
+
+.planner-brush__option:hover {
+  background: var(--hover);
+}
+
+.planner-brush__option.is-active {
+  background: var(--text);
+  color: #fff;
+}
+
+/* Teamval och medlemmar ---------------------------------------------------- */
+
+/* Blocken som ska ta resten av bredden när de får plats. */
+.planner-bar > .planner-summary {
+  flex: 1 1 340px;
+}
+
+/* En fast höjd skulle hindra blocket från att jämnas ut mot de andra. */
+.planner-bar > .planner-editing {
+  height: auto;
+}
+
+.planner-editing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px 0 14px;
+  height: 36px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--own-row-bg);
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.planner-editing__stop {
+  height: 26px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Arbetsförkortade dagar --------------------------------------------------- */
+
+.shortened-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px;
+  border: 1px solid var(--c-arbetsforkortad-stark);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.shortened-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.shortened-panel__title {
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+/* Att ändringen syns i allas rader ska stå framme, inte upptäckas efteråt. */
+.shortened-panel__warning {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--c-arbetsforkortad);
+  color: var(--text);
+  font-size: 0.6875rem;
+  font-weight: 650;
+}
+
+.shortened-panel__toggle {
+  margin-left: auto;
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid var(--c-arbetsforkortad-stark);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--c-arbetsforkortad-stark);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.shortened-panel__toggle.is-active {
+  background: var(--c-arbetsforkortad-stark);
+  color: #fff;
+}
+
+.shortened-panel__hint,
+.shortened-panel__empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.shortened-panel__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shortened-panel__chip {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 4px 3px 10px;
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 999px;
+  background: var(--c-arbetsforkortad);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.shortened-panel__remove {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.shortened-panel__remove:hover {
+  background: var(--c-rod-dag);
+  color: var(--c-rod-dag-stark);
+}
+
+/* Sammanfattning ---------------------------------------------------------- */
+
+.planner-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.planner-summary__item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.planner-summary__value {
+  font-size: 1.4rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.planner-summary__label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.planner-summary__note {
+  margin: 0 0 0 auto;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Färgförklaring ---------------------------------------------------------- */
+
+.planner-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.planner-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.planner-legend__swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgb(0 0 0 / 0.18);
+  border-radius: 3px;
+}
+
+/* Rutnätet ---------------------------------------------------------------- */
+
+.planner-scroll {
+  position: relative;
+  overflow: auto;
+  max-height: 70vh;
+  /* Håller den vågräta scrollbaren fri från understa medarbetarraden. */
+  padding-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  overscroll-behavior-x: contain;
+  scrollbar-width: auto;
+  scrollbar-color: #aab2bd var(--hover);
+  cursor: grab;
+}
+
+.planner-scroll.is-panning {
+  cursor: grabbing;
+}
+
+.planner-scroll::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.planner-scroll::-webkit-scrollbar-track {
+  background: var(--hover);
+  border-radius: 10px;
+}
+
+.planner-scroll::-webkit-scrollbar-thumb {
+  background: #aab2bd;
+  /* Genomskinlig ram ger tumgreppet luft utan att krympa träffytan. */
+  border: 4px solid var(--hover);
+  border-radius: 10px;
+}
+
+.planner-scroll::-webkit-scrollbar-thumb:hover {
+  background: #8b95a3;
+}
+
+.planner-scroll::-webkit-scrollbar-corner {
+  background: var(--hover);
+}
+
+.planner-grid {
+  --name-w: 310px;
+  --day-w: 26px;
+  --month-h: 32px;
+  --dayhead-h: 34px;
+  --row-h: 44px;
+  --group-h: 30px;
+
+  display: grid;
+  grid-template-rows: var(--month-h) var(--dayhead-h);
+  grid-auto-rows: var(--row-h);
+  width: max-content;
+  user-select: none;
+}
+
+.planner-corner,
+.planner-month,
+.planner-dayhead {
+  position: sticky;
+  background: var(--surface);
+}
+
+.planner-corner {
+  top: 0;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-right: 2px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.planner-month {
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-left: 2px solid var(--border);
+  border-bottom: 1px solid var(--grid-line);
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.planner-month__label {
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+/* Dova månadsfärger i en årscykel: sval vinter → varm sommar → sval höst.
+   Bara rubrikraden färgas – dagrutornas färger är betydelsebärande och får
+   inte konkurrera med den här orienteringshjälpen. */
+.planner-month--0 {
+  background: #dbe4ee;
+}
+
+.planner-month--1 {
+  background: #d9e5ef;
+}
+
+.planner-month--2 {
+  background: #dbe9e3;
+}
+
+.planner-month--3 {
+  background: #e0edda;
+}
+
+.planner-month--4 {
+  background: #e8f0d6;
+}
+
+.planner-month--5 {
+  background: #f3f0d3;
+}
+
+.planner-month--6 {
+  background: #f9ebd1;
+}
+
+.planner-month--7 {
+  background: #f9e3d0;
+}
+
+.planner-month--8 {
+  background: #f4ddd5;
+}
+
+.planner-month--9 {
+  background: #eed9d9;
+}
+
+.planner-month--10 {
+  background: #e3dbe7;
+}
+
+.planner-month--11 {
+  background: #dcdcea;
+}
+
+.planner-dayhead {
+  top: var(--month-h);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--border);
+  line-height: 1;
+}
+
+.planner-dayhead__number {
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.planner-dayhead__weekday {
+  color: var(--text-muted);
+  font-size: 0.5625rem;
+}
+
+.planner-dayhead.is-weekend {
+  background: var(--c-helg);
+}
+
+.planner-dayhead.is-red-day {
+  background: var(--c-rod-dag);
+}
+
+.planner-dayhead.is-month-start,
+.planner-cell.is-month-start {
+  border-left: 2px solid var(--border);
+}
+
+.planner-dayhead.is-today {
+  background: var(--c-idag);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--c-idag);
+}
+
+.planner-dayhead.is-today .planner-dayhead__number {
+  font-size: 0.75rem;
+}
+
+.planner-dayhead.is-today .planner-dayhead__weekday {
+  color: rgb(255 255 255 / 0.8);
+}
+
+/* Passerade dagar tonas ned i stället för att döljas – de är fortfarande
+   intressanta, bara inte längre påverkbara. */
+.planner-past {
+  pointer-events: none;
+  z-index: 1;
+  background: rgb(244 245 247 / 0.62);
+}
+
+.planner-dayhead.is-past {
+  opacity: 0.45;
+}
+
+.planner-dayhead.is-past.is-today {
+  opacity: 1;
+}
+
+/* Lodrät markör för dagens datum. Ligger över dagrutorna men under den
+   klistrade namnkolumnen, så den aldrig ritas ovanpå namnen vid sidscroll. */
+.planner-today {
+  pointer-events: none;
+  z-index: 1;
+  border-left: 2px solid var(--c-idag);
+  border-right: 2px solid var(--c-idag);
+  background: rgb(232 89 12 / 0.09);
+}
+
+/* Grupprubriker ------------------------------------------------------------ */
+
+.planner-group {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border-right: 2px solid var(--border);
+  border-bottom: 1px solid rgb(0 0 0 / 0.25);
+  background: var(--group-bg);
+  color: var(--group-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.planner-group__name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.planner-group__count {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+  color: var(--group-text);
+  font-size: 0.625rem;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+/* Fortsätter grupprubriken tvärs över kalendern, så indelningen syns även
+   långt ut i året där namnkolumnen är utanför synfältet. */
+.planner-group-band {
+  /* Samma lager som slöjan för passerade dagar, men senare i DOM:en – så att
+     rubrikraden förblir mörk även i den nedtonade delen av året. */
+  z-index: 1;
+  border-bottom: 1px solid rgb(0 0 0 / 0.25);
+  background: var(--group-bg);
+}
+
+/* Namnkolumn -------------------------------------------------------------- */
+
+.planner-name {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border-right: 2px solid var(--border);
+  border-bottom: 1px solid var(--grid-line);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+/* Personen står redan under ett tidigare team i vyn. Raden finns kvar så att
+   teamets bemanning är komplett, men dämpas så den inte läses som en dubblett
+   av misstag. */
+.planner-name--repeat .planner-name__avatar,
+.planner-name--repeat .planner-name__label {
+  opacity: 0.55;
+}
+
+.planner-name--repeat .planner-name__role {
+  font-style: italic;
+}
+
+.planner-name--own {
+  background: var(--own-row-bg);
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  border-left: 4px solid var(--accent);
+  padding-left: 10px;
+}
+
+/* Accentram runt den egna radens dagrutor. Ligger under den klistrade
+   namnkolumnen (z-index 1) men över rutorna. */
+.planner-own-row {
+  pointer-events: none;
+  z-index: 1;
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+.planner-name__avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.planner-name__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.planner-name__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.planner-name__you {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.planner-name__role {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inlagda dagar per person. Krymper aldrig – långa namn kortas i stället. */
+.planner-name__counts {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.planner-name__count {
+  min-width: 28px;
+  padding: 2px 7px;
+  border: 1px solid rgb(0 0 0 / 0.14);
+  border-radius: 999px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.planner-name__count--semester {
+  background: var(--c-semester);
+}
+
+.planner-name__count--foraldraledig {
+  background: var(--c-foraldraledig);
+}
+
+/* Dagrutor ---------------------------------------------------------------- */
+
+.planner-cell {
+  padding: 0;
+  border: 0;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
+  border-radius: 0;
+  font: inherit;
+}
+
+.planner-cell--own {
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.planner-cell--own:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.planner-cell--arbetsdag {
+  background: var(--c-arbetsdag);
+}
+
+.planner-cell--helg {
+  background: var(--c-helg);
+}
+
+.planner-cell--rod-dag {
+  background: var(--c-rod-dag);
+}
+
+.planner-cell--semester {
+  background: var(--c-semester);
+}
+
+.planner-cell--foraldraledig {
+  background: var(--c-foraldraledig);
+}
+
+.planner-cell--arbetsforkortad {
+  background: var(--c-arbetsforkortad);
+}
+
+/* Hörnflagga när dagen är arbetsförkortad men rutan redan visar ledighet.
+   Halva rutan i vardera färgen blir oläsligt vid 26 px bredd – en flagga i
+   hörnet lägger dagtypen i ett eget visuellt spår i stället. */
+.planner-cell.has-shortened-mark,
+.planner-legend__swatch.has-shortened-mark {
+  position: relative;
+}
+
+.planner-cell.has-shortened-mark::after,
+.planner-legend__swatch.has-shortened-mark::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top: 10px solid var(--c-arbetsforkortad-stark);
+  border-right: 10px solid transparent;
+}
+
+/* Förklaringens rutor är bara 14 px, så flaggan skalas ned där. */
+.planner-legend__swatch.has-shortened-mark::after {
+  border-top-width: 6px;
+  border-right-width: 6px;
+}
+
+/* Markering under drag ---------------------------------------------------- */
+
+.planner-selection {
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+  border: 2px solid var(--text);
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.55);
+}
+
+/* Hovermarkering: samma form som dragboxen, men tunnare ram eftersom den är
+   passiv och inte ska konkurrera visuellt med ett pågående drag. */
+.planner-highlight {
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+  border: 2px solid var(--text);
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.55);
+}
+
+/* Band över alla rader för en kalenderdag – röd dag eller arbetsförkortad.
+   Svagt med flit: kolumnen är redan färgad, och markeringen skulle blinka
+   konstant när musen sveper förbi. */
+.planner-daymark {
+  pointer-events: none;
+  z-index: 1;
+  border-left: 2px solid;
+  border-right: 2px solid;
+}
+
+.planner-daymark--roddag {
+  border-color: var(--c-rod-dag-stark);
+  background: rgb(180 69 63 / 0.12);
+}
+
+.planner-daymark--arbetsforkortad {
+  border-color: var(--c-arbetsforkortad-stark);
+  background: rgb(122 86 163 / 0.12);
+}
+
+.planner-daymark-label {
+  position: relative;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.planner-daymark-label__text {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+}
+
+.planner-daymark-label--roddag .planner-daymark-label__text {
+  background: var(--c-rod-dag-stark);
+}
+
+.planner-daymark-label--arbetsforkortad .planner-daymark-label__text {
+  background: var(--c-arbetsforkortad-stark);
+}
+
+/* Staplar dagtyp ovanpå dagantalet när rutan bär två markeringar. Dagantalet
+   ligger underst, närmast boxen det beskriver. */
+.planner-highlight__labels {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.planner-highlight__label {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+}
+
+.planner-highlight__label--roddag {
+  background: var(--c-rod-dag-stark);
+}
+
+.planner-highlight__label--arbetsforkortad {
+  background: var(--c-arbetsforkortad-stark);
+}
+
+.planner-selection__label {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+}
